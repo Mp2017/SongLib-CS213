@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sl.view.SLController">
+	
+   <children>
+      <HBox layoutX="-6.0" layoutY="7.0" prefHeight="27.0" prefWidth="1000.0">
+         <children>
+            <Button fx:id="AddB" layoutY="100.0" mnemonicParsing="false" text="Add Song" />
+            <Button fx:id="EditB" alignment="TOP_RIGHT" mnemonicParsing="false" text="Edit Song">
+               <HBox.margin>
+                  <Insets left="80.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="DeleteB" mnemonicParsing="false" text="Delete Song">
+               <HBox.margin>
+                  <Insets left="135.0" />
+               </HBox.margin></Button>
+         </children>
+      </HBox>
+      <ListView fx:id="ListView" editable="true" layoutX="5.0" layoutY="37.0" prefHeight="392.0" prefWidth="157.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0" />
+      <TitledPane animated="false" layoutX="167.0" layoutY="50.0" prefHeight="208.0" prefWidth="324.0" text="Selected Song Details">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="102.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="14.0" text="Song Name " />
+                  <Label layoutX="14.0" layoutY="55.0" text="Artist " />
+                  <Label layoutX="14.0" layoutY="99.0" text="Album " />
+                  <Label layoutX="14.0" layoutY="149.0" text="Year Released" />
+               </children>
+            </AnchorPane>
+        </content>
+      </TitledPane>
+   </children>
+</AnchorPane>
