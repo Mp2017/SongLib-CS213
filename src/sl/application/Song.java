@@ -2,14 +2,11 @@ package sl.application;
 
 
 public class Song{
-
-	private static final long serialVersionUID = 1L;
-	
 	private String name ; //Name of the Song 
 	private String artist ; //Name of the Artist who made the song
 	private int year ; //year in which this song was released  
 	private String album ; //name of the album which this song was in 
-	
+		
 	public String getName() {
 		return name;
 	}
@@ -42,10 +39,6 @@ public class Song{
 		this.album = album;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public Song(String name, String artist, int year, String album) {
 		this.name = name;
 		this.artist = artist;
@@ -69,5 +62,12 @@ public class Song{
 		this.artist = artist ;
 		this.album = album ; 
 	}
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
+	
 	
 }

@@ -10,6 +10,8 @@ import sl.view.SLController;
 
 public class SongLibApp extends Application {
 	
+	SLController slc ; 
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		
@@ -18,7 +20,7 @@ public class SongLibApp extends Application {
 			
 			AnchorPane root = (AnchorPane)loader.load(); //Top Level Container 
 			
-			SLController slc = loader.getController();
+			slc = loader.getController();
 		    slc.init(primaryStage); //Calling the init method of the SLController 
 		    
 			Scene scene = new Scene(root);
@@ -26,6 +28,11 @@ public class SongLibApp extends Application {
 			primaryStage.setTitle("SongApp");
 			primaryStage.setResizable(false);
 			primaryStage.show();
+	}
+	
+	@Override
+	public void stop(){
+		 slc.quit(); 
 	}
 	
 	public static void main(String[] args) {
