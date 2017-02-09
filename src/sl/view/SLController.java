@@ -48,8 +48,44 @@ public class SLController {
 		
 		//By default Select the 1st song in the list
 	    ListView.getSelectionModel().select(0);
+	    
+	    Song selectedSong=ListView.getSelectionModel().getSelectedItem();
+	    SNL.setText(selectedSong.getName());
+	    AL.setText(selectedSong.getArtist());
+	    if(selectedSong.getAlbum().equals(null)){
+	    	ALL.setText("Album Not Available");
+	    }else{
+	    	ALL.setText(selectedSong.getAlbum());
+	    }
+	    if(selectedSong.getYear() != 0 )
+			YL.setText(Integer.toString(selectedSong.getYear()));
+		else 
+			YL.setText("Year not available") ;
+	    
+	    
+	    //REgistering a Listener for the Selected Song nameon the LsitView
+	    ListView
+	    	.getSelectionModel()
+	    	.selectedItemProperty()
+	    	.addListener(
+	    			( obs, oldVal , newVal ) -> DisplayDetails(newVal) ) ; 
 		
+	}
+	
+	private void DisplayDetails(Song s) {
+		SNL.setText(s.getName());
+		AL.setText(s.getArtist());
 		
+		if(s.getAlbum().equals(null) || s.getAlbum().equals("")) {
+			ALL.setText("Album Not Available");
+		}else { 
+			ALL.setText(s.getAlbum());
+		}
+		
+		if(s.getYear() != 0 )
+		YL.setText(Integer.toString(s.getYear()));
+		else 
+			YL.setText("Year not available") ; 
 	}
 	
 	//When the USer quits the app, this method should be called in stop() of SongLibApp, and should iterate over the ArrayList of songs and overwrite the "Saved.txt"  
