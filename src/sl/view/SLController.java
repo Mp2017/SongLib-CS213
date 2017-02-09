@@ -8,12 +8,17 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.*;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ListView.EditEvent;
 import javafx.stage.Stage;
 
 import sl.application.Song;
@@ -30,6 +35,7 @@ public class SLController {
 	@FXML Label ALL ;//Album name label 
 	@FXML Label YL ; //Year Label 
 	
+	//list of song objects
 	private ObservableList<Song> ObsList ;
 	
 	public void init (Stage PrimaryStage){
@@ -42,15 +48,60 @@ public class SLController {
 		
 		// SORTing the OBsList based on the Song NAme field before setting the Listview items
 		FXCollections.sort(ObsList, new SongNameComparator() );
-		
 		ListView.setItems(ObsList); 
 		
 		
 		//By default Select the 1st song in the list
 	    ListView.getSelectionModel().select(0);
 		
-		
+		//now display the information for the first song
+	  //first, get the song
+	    Song selectedSong=ListView.getSelectionModel().getSelectedItem();
+	    SNL.setText(selectedSong.getName());
+	    AL.setText(selectedSong.getArtist());
+	    ALL.setText(selectedSong.getAlbum());
+	    YL.setText(""+selectedSong.getYear());
+	    
+	    ListView.getSelectionModel().selectedItemProperty().addListener(
+	    		new ChangeListener<Song>(){
+	    	    	//@Override
+	    	    	public void changed(ObservableValue<? extends Song> observable, Song oldValue, Song newVale){
+	    	    		Song selectedSong=ListView.getSelectionModel().getSelectedItem();
+	    	    	    SNL.setText(selectedSong.getName());
+	    	    	    AL.setText(selectedSong.getArtist());
+	    	    	    ALL.setText(selectedSong.getAlbum());
+	    	    	    YL.setText(""+selectedSong.getYear());
+	    	    	}
+	    	    	
+	    	    }
+	    
+	    		
+	    		
+	    );
+	    
+	    DeleteB.setOnAction(new EventHandler<ActionEvent>(){
+	    	public void handle(ActionEvent e){
+	    		Song selectedSong=ListView.getSelectionModel().getSelectedItem();
+	    		//delete the song that is selected from the list
+	    		//first find the song in observablelist
+	    		for(int i=0; i<ObsList.size();i++){
+	    			if(ObsList.get(i)==selectedSong){
+	    				ObsList.remove(i);
+	    				break;
+	    			}
+	    		}
+	    		
+	    		//ListView.setItems(ObsList); ?
+	    		
+	    		//error when nothing in list
+	    	}
+	    	
+	    	
+	    	
+	    });
 	}
+	
+	
 	
 	//When the USer quits the app, this method should be called in stop() of SongLibApp, and should iterate over the ArrayList of songs and overwrite the "Saved.txt"  
 	public void quit(){
@@ -125,7 +176,7 @@ public class SLController {
 				case 3:		
 					Song t = new Song(temp[0], temp[1] , Integer.parseInt(temp[2]) ) ;
 					SL.add(t) ; 
-					break ;
+					break;
 				case 4: 
 					if(temp[2].equals("") || temp[2] == null ){
 						Song u = new Song(temp[0], temp[1] ,temp[3]) ;
