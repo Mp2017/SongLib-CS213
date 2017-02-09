@@ -22,7 +22,7 @@
                   <Insets left="130.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="DeleteB" mnemonicParsing="false" text="Delete Song">
+            <Button fx:id="DeleteB" mnemonicParsing="false" onAction="#DeleteSong" text="Delete Song">
                <HBox.margin>
                   <Insets left="135.0" />
                </HBox.margin></Button>

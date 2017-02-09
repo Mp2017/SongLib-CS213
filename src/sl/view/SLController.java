@@ -10,6 +10,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,6 +31,7 @@ public class SLController {
 	@FXML Label ALL ;//Album name label 
 	@FXML Label YL ; //Year Label 
 	
+	//list of song objects
 	private ObservableList<Song> ObsList ;
 	
 	public void init (Stage PrimaryStage){
@@ -42,26 +44,22 @@ public class SLController {
 		
 		// SORTing the OBsList based on the Song NAme field before setting the Listview items
 		FXCollections.sort(ObsList, new SongNameComparator() );
-		
 		ListView.setItems(ObsList); 
 		
 		
 		//By default Select the 1st song in the list
 	    ListView.getSelectionModel().select(0);
 	    
+	    //Displays the details of the 1st song
 	    Song selectedSong=ListView.getSelectionModel().getSelectedItem();
-	    SNL.setText(selectedSong.getName());
-	    AL.setText(selectedSong.getArtist());
-	    if(selectedSong.getAlbum().equals(null)){
-	    	ALL.setText("Album Not Available");
+	    if(selectedSong != (null)){
+	    	DisplayDetails(selectedSong) ;
 	    }else{
-	    	ALL.setText(selectedSong.getAlbum());
+	    	SNL.setText(null);
+	    	AL.setText(null);
+	    	ALL.setText(null);
+	    	YL.setText(null);
 	    }
-	    if(selectedSong.getYear() != 0 )
-			YL.setText(Integer.toString(selectedSong.getYear()));
-		else 
-			YL.setText("Year not available") ;
-	    
 	    
 	    //REgistering a Listener for the Selected Song nameon the LsitView
 	    ListView
@@ -70,8 +68,8 @@ public class SLController {
 	    	.addListener(
 	    			( obs, oldVal , newVal ) -> DisplayDetails(newVal) ) ; 
 		
-	}
-	
+	}//init ends
+
 	private void DisplayDetails(Song s) {
 		SNL.setText(s.getName());
 		AL.setText(s.getArtist());
@@ -82,11 +80,38 @@ public class SLController {
 			ALL.setText(s.getAlbum());
 		}
 		
-		if(s.getYear() != 0 )
-		YL.setText(Integer.toString(s.getYear()));
+		if(s.getYear() != 0 ){
+			YL.setText(Integer.toString(s.getYear())); }
 		else 
 			YL.setText("Year not available") ; 
 	}
+
+
+   	public void DeleteSong(ActionEvent e){
+   		
+	    Song selectedSong=ListView.getSelectionModel().getSelectedItem();
+	    //delete the song that is selected from the list
+	    //first find the song in observablelist
+	    
+	    for(int i=0; i<ObsList.size();i++){
+	    	if(ObsList.get(i).equals(selectedSong)){
+	    		ObsList.remove(i);
+	    		break;
+	    	}
+	    }
+	    		
+	    if(ObsList.size() == 0 ){
+	    	System.out.println("ObsList empty NOW");
+	    	ObsList = FXCollections.observableArrayList() ; 
+	    	SNL.setText(null);
+	    	AL.setText(null);
+	    	ALL.setText(null);
+	    	YL.setText(null);
+	    }
+	    //ListView.setItems(ObsList); ? //Not Needed cz Updating Observable List automatically refreshes the ListView
+	    //error when nothing in list
+   	}	
+	
 	
 	//When the USer quits the app, this method should be called in stop() of SongLibApp, and should iterate over the ArrayList of songs and overwrite the "Saved.txt"  
 	public void quit(){
@@ -96,12 +121,6 @@ public class SLController {
 			writer = new BufferedWriter (new FileWriter(fnew)) ;
 			
 			String temp = null ; 
-			System.out.println("Checking the ObsList before writing to File");
-			
-			System.out.println(ObsList==null);
-			for(Song s : ObsList){
-				System.out.println(s.toString());
-			}
 			
 			//Iterate over the entire ArrayList forms a String and writes it out to the file  
 			for(Song s : ObsList){
@@ -161,7 +180,7 @@ public class SLController {
 				case 3:		
 					Song t = new Song(temp[0], temp[1] , Integer.parseInt(temp[2]) ) ;
 					SL.add(t) ; 
-					break ;
+					break;
 				case 4: 
 					if(temp[2].equals("") || temp[2] == null ){
 						Song u = new Song(temp[0], temp[1] ,temp[3]) ;
