@@ -1,3 +1,5 @@
+//Maxim Torubarov, Mihir Patel
+
 package sl.application;
 	
 import javafx.application.Application;
@@ -8,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import sl.view.SLController;
 
 
-public class SongLibApp extends Application {
+public class SongLib extends Application {
 	
 	SLController slc ; 
 	

@@ -1,10 +1,12 @@
+//Maxim Torubarov, Mihir Patel
+
 package sl.application;
 
 
 public class Song{
 	private String name ; //Name of the Song 
 	private String artist ; //Name of the Artist who made the song
-	private int year ; //year in which this song was released  
+	private String year ; //year in which this song was released  
 	private String album ; //name of the album which this song was in 
 		
 	public String getName() {
@@ -23,11 +25,11 @@ public class Song{
 		this.artist = artist;
 	}
 
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 
@@ -39,7 +41,7 @@ public class Song{
 		this.album = album;
 	}
 
-	public Song(String name, String artist, int year, String album) {
+	public Song(String name, String artist, String year, String album) {
 		this.name = name;
 		this.artist = artist;
 		this.year = year;
@@ -50,19 +52,20 @@ public class Song{
 		this.name = name ; 
 		this.artist = artist ;
 	}
-	
-	public Song (String name , String artist, int year) {
+	/*
+	public Song (String name , String artist, String year, String album) {
 		this.name = name ; 
 		this.artist = artist ;
 		this.year = year ; 
 	}
-	
+	*/
+	/*
 	public Song (String name , String artist, String album) {
 		this.name = name ; 
 		this.artist = artist ;
 		this.album = album ; 
 	}
-
+*/
 	@Override
 	public String toString() {
 		return this.name;
