@@ -25,12 +25,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import sl.application.Song;
@@ -46,6 +42,7 @@ public class SLController {
 	@FXML Label AL ; //Artist Name Label 
 	@FXML Label ALL ;//Album name label 
 	@FXML Label YL ; //Year Label 
+	@FXML Button ESS,  newS ; 
 	
 	//Edit/Add TextFields
 	@FXML TextField SNLEdit ; //Song Name Label in Details section 
@@ -53,7 +50,7 @@ public class SLController {
 	@FXML TextField ALLEdit ;//Album name label 
 	@FXML TextField YLEdit ; //Year Label 
 	
-	 Stage primaryStage;
+	Stage primaryStage;
 	
 	//list of song objects
 	private ObservableList<Song> ObsList ;
@@ -72,6 +69,7 @@ public class SLController {
 		FXCollections.sort(ObsList, new SongNameComparator() );
 		ListView.setItems(ObsList); 
 		
+		DisableCrucialButtons(true) ; 
 		
 		//By default Select the 1st song in the list
 	    ListView.getSelectionModel().select(0);
@@ -80,6 +78,7 @@ public class SLController {
 	    Song selectedSong=ListView.getSelectionModel().getSelectedItem();
 	    if(selectedSong != (null)){
 	    	DisplayDetails(selectedSong) ;
+	    	
 	    }else{
 	    	SNL.setText("");
 	    	AL.setText("");
@@ -94,10 +93,14 @@ public class SLController {
 	    	.addListener(
 	    			( obs, oldVal , newVal ) -> DisplayDetails(newVal) ) ; 
 		
+	    SNLEdit.setPromptText("Enter song Name ");
+	    ALEdit.setPromptText("Enter Artist Name ");
 	}//init ends
 
 	//displays the details of the song in the labels
 	private void DisplayDetails(Song s) {
+		DisableCrucialButtons(true);
+		
 		//if try to delete song that doesnt exit, return
 		if(s==null){
 			return;
@@ -105,23 +108,35 @@ public class SLController {
 		
 		//set the song name
 		SNL.setText(s.getName());
+		SNLEdit.clear(); 
+		SNLEdit.setText(s.getName());
 		
 		//set the artist
 		AL.setText(s.getArtist());
+		ALEdit.clear(); 		
+		ALEdit.setText(s.getArtist());
 		
 		//set the album
-		if(s.getAlbum() == null|| s.getAlbum().equals("")) {
+		if(s.getAlbum() == null || s.getAlbum().equals("")) {
 			ALL.setText("Album Not Available");
+			ALLEdit.clear(); 
+			ALLEdit.setPromptText("Enter Album Name ");
 		}else { 
 			ALL.setText(s.getAlbum());
+			ALLEdit.clear(); 
+			ALLEdit.setText(s.getAlbum());
 		}
 		
 		//set the year
-		if(s.getYear() == null||s.getYear().equals("") ){
+		if(s.getYear() == null ||s.getYear().equals("") ){
 			YL.setText("Year Not Available"); 
+			YLEdit.clear(); 
+			YLEdit.setPromptText("Enter Year ");
 		}
 		else { 
 			YL.setText(s.getYear());
+			YLEdit.clear(); 
+			YLEdit.setText(s.getYear());
 		}
 	}
 
@@ -155,6 +170,10 @@ public class SLController {
 		    	AL.setText("");
 		    	ALL.setText("");
 		    	YL.setText("");
+		    	SNLEdit.clear();
+		    	ALEdit.clear(); 
+		    	ALLEdit.clear(); 
+		    	YLEdit.clear(); 
 		    }
 		    //ListView.setItems(ObsList); ? //Not Needed cz Updating Observable List automatically refreshes the ListView
 		    //error when nothing in list
@@ -235,12 +254,13 @@ public class SLController {
 			ListView.setItems(ObsList); 
 	   		DisplayDetails(selectedSong);
 	   		
-	   		
 	   		//in end clear text fields
 	   		SNLEdit.clear();
 	   		ALLEdit.clear();
 	   		ALEdit.clear();
 	   		YLEdit.clear();
+	   		
+	   		DisplayDetails(selectedSong) ; 
 	    }else{
 	    	return;
 	    }
@@ -288,7 +308,10 @@ public class SLController {
 			if(song.getName().toLowerCase().equals(newName.toLowerCase()) && song.getArtist().toLowerCase().equals(newArtist.toLowerCase())){
 				//this song exists so pop message and return;
 				displayPopUp("This song already exists in the list. Please enter another artist and/or name");
-	   			return;
+	   			AddB.setDisable(false); 
+				return;
+			}else{
+				DisableCrucialButtons(true) ; 
 			}
    			
    		}
@@ -303,6 +326,8 @@ public class SLController {
 	    //if the user presses ok, then go through with the action
 	    if(result.get()==ButtonType.OK){
 	   		
+	    	DisableCrucialButtons(true) ;  
+	    	
 	   		Song song = new Song(newName, newArtist);
 	  
 	   		song.setAlbum(newAlbum);
@@ -314,7 +339,7 @@ public class SLController {
 	   		ObsList.add(song);
 	   		FXCollections.sort(ObsList, new SongNameComparator() );
 			ListView.setItems(ObsList); 
-	   		DisplayDetails(song);
+	   		
 	   		
 	   		//returns -1 if no song found otherwise returns the index in the Obslist
 	   		int index= findSongArtist(song.getName(), song.getArtist());
@@ -325,7 +350,10 @@ public class SLController {
 	   		ALLEdit.clear();
 	   		ALEdit.clear();
 	   		YLEdit.clear();
+	   		
+	   		DisplayDetails(song);
 	    }else{
+	    	AddB.setDisable(false); 
 	    	return;
 	    }
    	}	
@@ -427,4 +455,30 @@ public class SLController {
 		return SL;
 	}
 	
+	public void HandleNewSong() {
+		AddB.setDisable(false);
+		EditB.setDisable(true);
+		SNL.setText("");
+		AL.setText("");
+		ALL.setText("");
+		YL.setText("");
+		SNLEdit.clear();
+		ALEdit.clear() ; 
+		ALLEdit.clear(); 
+		YLEdit.clear(); 
+		SNLEdit.setPromptText("Enter New Song Name");
+		ALEdit.setPromptText("Enter the new Song's Artist name");
+		ALLEdit.setPromptText("Enter the Album name (Optional) ");
+		YLEdit.setPromptText("Enter Year (Optional)");
+	}
+	
+	public void EditHandler() {
+		EditB.setDisable(false);
+		AddB.setDisable(true);
+	}
+	
+	public void DisableCrucialButtons ( boolean b ){
+		AddB.setDisable(b); 
+		EditB.setDisable(b); 
+	}
 }

@@ -15,21 +15,18 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="533.0" prefWidth="565.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sl.view.SLController">
 	
    <children>
-      <HBox layoutX="9.0" layoutY="14.0" prefHeight="31.0" prefWidth="548.0">
+      <HBox layoutX="9.0" layoutY="14.0" prefHeight="31.0" prefWidth="548.0" spacing="110.0">
          <children>
-            <Button fx:id="AddB" layoutY="100.0" mnemonicParsing="false" onAction="#AddSong" text="Add Song">
+            <Button fx:id="newS" mnemonicParsing="false" onAction="#HandleNewSong" prefHeight="25.0" prefWidth="105.0" text="+ NEW SONG" />
+            <Button fx:id="DeleteB" mnemonicParsing="false" onAction="#DeleteSong" prefHeight="31.0" prefWidth="107.0" text="Delete Song" wrapText="true">
                <HBox.margin>
-                  <Insets left="10.0" />
+                  <Insets />
                </HBox.margin></Button>
-            <Button fx:id="EditB" alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#EditSong" text="Edit Song">
-               <HBox.margin>
-                  <Insets left="130.0" />
-               </HBox.margin>
+            <Button fx:id="ESS" mnemonicParsing="false" onAction="#EditHandler" prefHeight="32.0" prefWidth="134.0" text="Edit Selected Song">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </Button>
-            <Button fx:id="DeleteB" mnemonicParsing="false" onAction="#DeleteSong" text="Delete Song" wrapText="true">
-               <HBox.margin>
-                  <Insets left="135.0" />
-               </HBox.margin></Button>
          </children>
       </HBox>
       <ListView fx:id="ListView" editable="true" layoutX="5.0" layoutY="37.0" prefHeight="465.0" prefWidth="157.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0" />
@@ -59,7 +56,7 @@
             </GridPane>
          </content>
       </TitledPane>
-      <TitledPane animated="false" layoutX="167.0" layoutY="282.0" prefHeight="232.0" prefWidth="391.0" text="Edit currently selected song or Add song">
+      <TitledPane animated="false" layoutX="167.0" layoutY="282.0" prefHeight="248.0" prefWidth="391.0" text="Edit currently selected song or Add song">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="322.0" visible="false">
                <children>
@@ -85,9 +82,11 @@
                         <TextField fx:id="YLEdit" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
+                  <Button fx:id="EditB" alignment="TOP_RIGHT" layoutX="163.0" layoutY="196.0" mnemonicParsing="false" onAction="#EditSong" text="Edit Song" />
                </children>
             </AnchorPane>
          </content>
       </TitledPane>
+      <Button fx:id="AddB" layoutX="456.0" layoutY="502.0" mnemonicParsing="false" onAction="#AddSong" text="Add Song" />
    </children>
 </AnchorPane>
